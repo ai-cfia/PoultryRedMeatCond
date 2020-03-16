@@ -11,12 +11,14 @@ import datetime
 from shareplum import Office365
 import os
 import requests
+#import selenium driver
+
 try:
     from selenium import webdriver
 except ImportError:
     print("selenium not installed, installing selenium")
     get_ipython().system('pip install selenium')
-
+#load webdriver
 
 
 try:
@@ -34,7 +36,7 @@ except:
 
 driver.find_element_by_xpath('//*[@id="promptForm"]/div/input[11]').click()
 
-
+#Load CSV file
 
 while True:
     try:
@@ -50,6 +52,7 @@ count = 0
 names_tags_of_files = [str(datetime.datetime.now()).replace("-","").split(" ")[0], "Report", "ADH"]
 csv_in_folder = False
 
+#Check if it is part of recent file
 
 while True:
     try:
