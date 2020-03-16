@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[118]:
 
 
 from selenium import webdriver
@@ -10,11 +9,6 @@ import time
 import glob
 import datetime
 from shareplum import Office365
-
-
-# In[119]:
-
-
 import os
 import requests
 try:
@@ -24,11 +18,9 @@ except ImportError:
     get_ipython().system('pip install selenium')
 
 
-# In[120]:
-
 
 try:
-    driver = webdriver.Chrome("./Downloads/chromedriver.exe")
+    driver = webdriver.Chrome("./chromedriver.exe")
 except ImportError:
     print("Driver could not be loaded")
 
@@ -40,13 +32,8 @@ except:
     print('failed to load site and query')
 
 
-# In[121]:
-
-
 driver.find_element_by_xpath('//*[@id="promptForm"]/div/input[11]').click()
 
-
-# In[122]:
 
 
 while True:
@@ -57,9 +44,6 @@ while True:
     except:
         print("CSV not loaded. System sleep for 10 seconds")
         time.sleep(10)
-
-
-# In[123]:
 
 
 count = 0
@@ -91,9 +75,6 @@ except:
     print('failed to load site and query')
 
 
-# In[124]:
-
-
 
 try:
     print("Attempting to upload CSV file. Please do not download any other files")
@@ -103,22 +84,4 @@ except:
 
 
     
-
-
-# In[81]:
-
-
-driver.switch_to.default_content()
-
-
-# In[89]:
-
-
-driver.switch_to.frame(driver.find_element_by_tag_name("iframe"))
-
-
-# In[ ]:
-
-
-
 
