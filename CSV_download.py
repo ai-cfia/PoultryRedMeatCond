@@ -56,7 +56,7 @@ csv_in_folder = False
 
 while True:
     try:
-        list_of_files = glob.glob("./Downloads/*")
+        list_of_files = glob.glob("~/Downloads/*")
         five_newest_files = sorted(list_of_files, key = os.path.getctime)[-5:]
 
         for file in five_newest_files:
@@ -69,7 +69,8 @@ while True:
         print("check for file count :",  count)
 print(five_newest_files)
 if csv_in_folder:
-    print("CSV downloaded to downloads folder")
+    print("CSV downloaded to downloads folder, moving to data folder now.")
+    os.rename(five_newest_files[-1], os.getcwd() + "/" + five_newest_files.split("/")[-1])
 else:
     sys.exit("Download Failed")
 try:
