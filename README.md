@@ -8,7 +8,7 @@ Change the script to executable OR run ./CSV_download.py on your terminal.
 
 # Demonstration
 
-
+![](example.gif)
 # PLEASE MAKE SURE NOTHING IS BEING DOWNLOADED WHILE THE SCRIPT IS RUNNING
 
 
