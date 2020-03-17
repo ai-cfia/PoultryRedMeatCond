@@ -8,9 +8,9 @@ from selenium.webdriver.chrome.options import Options
 import time
 import glob
 import datetime
-from shareplum import Office365
 import os
 import requests
+import sys
 #import selenium driver
 
 try:
@@ -21,21 +21,45 @@ except ImportError:
 #load webdriver
 
 
+def enable_download_headless(browser,download_dir):
+    browser.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+    params = {'cmd':'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_dir}}
+    browser.execute("send_command", params)
+
+    
+
+
 try:
     driver = webdriver.Chrome("./chromedriver.exe")
 except ImportError:
     print("Driver could not be loaded")
 
 print("Driver now loaded to selenium")
+enable_download_headless(driver, "./data/")
+
+
 
 try:
     driver.get("https://aimis-simia.agr.gc.ca/rp/index-eng.cfm?action=pR&pdctc=&r=278")
 except:
     print('failed to load site and query')
 
+#remove old CSV file
+
+files = glob.glob('./data/*.csv')
+if len(files) > 0:
+    print("removing old csv file")
+    for f in files:
+        os.remove(f)
+
+    
+    
+options = webdriver.ChromeOptions() 
+options.add_argument("download.default_directory=D:/Sele_Downloads")
+    
 
 driver.find_element_by_xpath('//*[@id="promptForm"]/div/input[11]').click()
-
+count = 0
 #Load CSV file
 
 while True:
@@ -46,46 +70,8 @@ while True:
     except:
         print("CSV not loaded. System sleep for 10 seconds")
         time.sleep(10)
-
-
-count = 0
-names_tags_of_files = [str(datetime.datetime.now()).replace("-","").split(" ")[0], "Report", "ADH"]
-csv_in_folder = False
-
-#Check if it is part of recent file
-
-while True:
-    try:
-        list_of_files = glob.glob("~/Downloads/*")
-        five_newest_files = sorted(list_of_files, key = os.path.getctime)[-5:]
-
-        for file in five_newest_files:
-            if all(isinstance(item, str) for item in names_tags_of_files):
-                csv_in_folder = True
-                break
-        if csv_in_folder == True:
-            break
-    except:
-        print("check for file count :",  count)
-print(five_newest_files)
-if csv_in_folder:
-    print("CSV downloaded to downloads folder, moving to data folder now.")
-    os.rename(five_newest_files[-1], os.getcwd() + "/" + five_newest_files.split("/")[-1])
-else:
-    sys.exit("Download Failed")
-try:
-    driver.get("https://collab.cfia-acia.inspection.gc.ca/cfia-acia/inspection/BIO/AH/_layouts/15/guestaccess.aspx?guestaccesstoken=PQ5mJWGr8ow4MvGL7nxHnAHmP6uu9b6TPCsH0qCO2xo%3d&folderid=2_15c8c3ab2c4d9448ebea30bee8e0a63e1&rev=1")
-except:
-    print('failed to load site and query')
-
-
-
-try:
-    print("Attempting to upload CSV file. Please do not download any other files")
-    driver.find_element_by_xpath('//*[@id="QCB1_Button2"]').click()
-except:
-    print("CSV not uploaded")
-
+        if count == 100:
+            sys.exit("Failed to Download")
+    count += 1
 
     
-
