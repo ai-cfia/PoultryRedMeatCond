@@ -11,6 +11,8 @@ import datetime
 import os
 import requests
 import sys
+import subprocess
+
 #import selenium driver
 
 try:
@@ -66,6 +68,25 @@ while True:
     try:
         print("Attempting to download CSV file. Please do not download any other files")
         driver.find_element_by_xpath("//*[@id=\"wb-main-in\"]/p[2]/a[1]").click()
+        
+        
+        command = 'git add .'
+        
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
+
+        command = 'git commit -m "update" '
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
+
+        command = 'git push https://peterpark77:Qkrqorbs123!@github.com/ai-cfia/PoultryRedMeatCond.git --all
+'
+        
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
+
+        
+        print("Succesfully uploaded data)
         break
     except:
         print("CSV not loaded. System sleep for 10 seconds")
