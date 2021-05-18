@@ -2,8 +2,7 @@
 # coding: utf-8
 
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+
 import time
 import glob
 import datetime
@@ -21,7 +20,8 @@ except ImportError:
 #load webdriver
 
 
-
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
     
 
 
