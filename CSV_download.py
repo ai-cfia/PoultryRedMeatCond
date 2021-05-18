@@ -2,7 +2,6 @@
 # coding: utf-8
 
 
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
@@ -11,8 +10,7 @@ import datetime
 import os
 import requests
 import sys
-import subprocess
-
+import shutil
 #import selenium driver
 
 try:
@@ -23,21 +21,25 @@ except ImportError:
 #load webdriver
 
 
-def enable_download_headless(browser,download_dir):
-    browser.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
-    params = {'cmd':'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_dir}}
-    browser.execute("send_command", params)
 
     
 
 
 try:
-    driver = webdriver.Chrome("./chromedriver.exe")
+    data_path =  os.getcwd() + "\\data\\"
+    prefs = {'download.default_directory' : data_path}
+
+    chrome_options.add_experimental_option("prefs", prefs)
+
+    driver = webdriver.Chrome("./chromedriver.exe", chrome_options=chrome_options)
+
+
+    
+    
 except ImportError:
     print("Driver could not be loaded")
 
 print("Driver now loaded to selenium")
-enable_download_headless(driver, "./data/")
 
 
 
@@ -48,11 +50,11 @@ except:
 
 #remove old CSV file
 
-files = glob.glob('./data/*.csv')
-if len(files) > 0:
-    print("removing old csv file")
-    for f in files:
-        os.remove(f)
+#files = glob.glob('./data/*.csv')
+# if len(files) > 0:
+#     print("removing old csv file")
+#     for f in files:
+#         os.remove(f)
 
     
     
@@ -67,26 +69,7 @@ count = 0
 while True:
     try:
         print("Attempting to download CSV file. Please do not download any other files")
-        driver.find_element_by_xpath("//*[@id=\"wb-main-in\"]/p[2]/a[1]").click()
-        
-        
-        command = 'git add .'
-        
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-
-        command = 'git commit -m "update" '
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-
-        command = 'git push https://peterpark77:Qkrqorbs123!@github.com/ai-cfia/PoultryRedMeatCond.git --all
-'
-        
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        output, error = process.communicate()
-
-        
-        print("Succesfully uploaded data)
+        driver.find_element_by_xpath("/html/body/main/p[2]/a[1]").click()
         break
     except:
         print("CSV not loaded. System sleep for 10 seconds")
@@ -94,5 +77,13 @@ while True:
         if count == 100:
             sys.exit("Failed to Download")
     count += 1
+    
+print("File succesfully downloaded. Saving the file to correct title")
+time.sleep(10)
+list_of_files = glob.glob(data_path + "*.csv") # * means all if need specific format then *.csv
+latest_file = max(list_of_files, key=os.path.getctime)
+
+shutil.copy(latest_file , data_path + "\\ADH-717 - Poultry and Red Meat data.csv")
+
 
     
