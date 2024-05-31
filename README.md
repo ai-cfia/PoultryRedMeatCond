@@ -1,14 +1,21 @@
-# Purpose
-This repository allows us to share data `ADH-717 - Poultry and Red Meat Condemnations in Federally Registered Establishments - Criteria` with the visualization team.
-# Installation
-1. Download the file [`chromedriver.exe`](https://chromedriver.chromium.org/downloads) that corresponds to your chrome version (It is possible to check chrome version by Google search query of "Chrome Version")
-2. Make sure the chrome driver is within the same directory as where the script is
-# Modify script as executable or Run as cript
-Change the script to executable OR run ./CSV_download.py on your terminal.
+## Purpose
+This repository allows us to share data `ADH-717 - Poultry and Red Meat Condemnations in Federally Registered Establishments - Criteria` with the visualization team. 
 
-# Demonstration
+When the [new monthly report](https://aimis-simia.agr.gc.ca/rp/index-eng.cfm?action=pR&pdctc=&r=278) is released, the `CSV_downloader.py`script is executed, and it downloads the new report and merges it into `ADH-717 Poultry and Red Meat data.csv`.
 
-![](example.gif)
-# PLEASE MAKE SURE NOTHING IS BEING DOWNLOADED WHILE THE SCRIPT IS RUNNING
+## Updates
+* `ADH-717 Poultry and Red Meat data.csv` now contains all historical data (since 1999, instead of only a 3-year window).
+* Runs from Docker container, automated thanks to GitHub Actions (CRON job), instead of using Azure DataBricks.
+* Answers the security question to gain access to the new report.
+
+## Running the script locally
+### Building the container
+`docker build -t csvscraper .`
+
+### Running the container
+Modify the path to point to the 
+`docker run -v ./data:/usr/src/app/data -p 8081:8081 csvscraper`
+
+
 
 

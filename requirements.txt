@@ -1,0 +1,5 @@
+python-dotenv
+selenium==4.1.0
+webdriver_manager
+PyGithub
+pandas
