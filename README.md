@@ -15,12 +15,3 @@ When the [new monthly report](https://aimis-simia.agr.gc.ca/rp/index-eng.cfm?act
 ### Running the container
 Modify the path to point to the 
 `docker run -v ./data:/usr/src/app/data -p 8081:8081 csvscraper`
-
-
-
-## Running the script locally
-### Building the container
-`docker build -t csvscraper .`
-
-### Running the container
-`docker run -v ./data:/usr/src/app/data -p 8081:8081 csvscraper`
