@@ -87,31 +87,7 @@ def merge_reports(new_report):
 def update_github(commit_message="Updated the master list"):
     """Commit and push changes to GitHub."""
     print('\033[2;31;43m UPDATING GITHUB \033[0;0m')
-
-    # Load the data
-    GITHUB_TOKEN = os.getenv
-    GITHUB_REPO = os.getenv('GITHUB_REPO')
-    GITHUB_BRANCH = os.getenv('GITHUB_BRANCH')
-    GITHUB_PATH = os.getenv('GITHUB_PATH')
-    GITHUB_USERNAME = os.getenv('GITHUB_USERNAME')
-    GITHUB_EMAIL = os.getenv('GITHUB_EMAIL')
-
-def push_to_github(filename, content, commit_message):
-    token = os.getenv('GITHUB_TOKEN')
-    g = Github(token)
-    repo = g.get_repo("RussellJimmies/Poultry")
-
-    try:
-        # Get the contents of the file in the repo (if it exists)
-        contents = repo.get_contents(filename, ref="main")  # Use the correct branch name here
-        # Update the file
-        repo.update_file(contents.path, commit_message, content, contents.sha, branch="main")
-        print("File updated successfully.")
-    except Exception as e:
-        # If the file does not exist, create it
-        print("File not found, creating new file.")
-        repo.create_file(filename, commit_message, content, branch="main")
-        print("File created successfully.")  
+    pass 
 
 def main():
     """Main function to retrieve the CSV report."""
