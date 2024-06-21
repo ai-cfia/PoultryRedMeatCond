@@ -18,7 +18,10 @@ jobs:
         run: |
             docker build -t csvscraper .
             ### Running the container
-            docker run -v ./data:/usr/src/app/data -p 8081:8081 -e MASTERLIST_URL='https://raw.githubusercontent.com/ai-cfia/PoultryRedMeatCond/1-fix-chromedriver-pipeline-error/data/ADH-717%20-%20Poultry%20and%20Red%20Meat%20data.csv' -e NEW_REPORT_URL='https://aimis-simia.agr.gc.ca/rp/index-eng.cfm?action=pR&pdctc=&r=278' csvscraper
+            docker run -v ./data:/usr/src/app/data -p 8081:8081 -e MASTERLIST_URL=$MASTERLIST_URL -e NEW_REPORT_URL=$NEW_REPORT_URL csvscraper
+        env:
+          MASTERLIST_URL: ${{ secrets.MASTERLIST_URL }}
+          NEW_REPORT_URL: ${{ secrets.NEW_REPORT_URL }}
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9.1.4
