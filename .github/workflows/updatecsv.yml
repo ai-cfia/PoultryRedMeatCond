@@ -14,12 +14,25 @@ jobs:
       - name: Check Out Repo
         uses: actions/checkout@v4
 
-      - name: Run docker job
-        run: |
-            docker build --build-arg ARG_NEW_REPORT_URL='https://aimis-simia.agr.gc.ca/rp/index-eng.cfm?action=pR&pdctc=&r=278' --build-arg ARG_MASTERLIST_URL='https://raw.githubusercontent.com/ai-cfia/PoultryRedMeatCond/1-fix-chromedriver-pipeline-error/data/ADH-717%20-%20Poultry%20and%20Red%20Meat%20data.csv' -t update-csv .
-        env:
-          NEW_REPORT_URL: ${{ secrets.NEW_REPORT_URL }}
-          MASTERLIST_URL: ${{ secrets.MASTERLIST_URL }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          tags: csvscraper:latest
+          push: false
+          secret-files: |
+            .env
+          secrets: |
+            "NEW_REPORT_URL=${{secrets.NEW_REPORT_URL}}"
+            "MASTERLIST_URL=${{secrets.MASTERLIST_URL}}"
+
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: csvscraper:latest
+          options: -v ./data:/usr/src/app/data -p 8081:8081
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9.1.4
