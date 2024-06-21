@@ -1,0 +1,30 @@
+name: Update Poultry and Red Meat data
+
+on:
+#   schedule:
+#     - cron: '0 0 3 * *'
+  push:
+    branches:
+      - 1-fix-chromedriver-pipeline-error
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v4
+
+      - name: Run docker job
+        run: |
+            docker build -t csvscraper .
+            ### Running the container
+            docker run -v ./data:/usr/src/app/data -p 8081:8081 csvscraper
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9.1.4
+        with:
+          author_name: GitHub Action
+          author_email: actions@github.com
+          message: 'Update Poultry and Red Meat data'
+          add: 'data\ADH-717 - Poultry and Red Meat data.csv'
+          new_branch: 'testing'
