@@ -8,7 +8,7 @@ on:
       - 1-fix-chromedriver-pipeline-error
 
 jobs:
-  build-and-push:
+  update-csv:
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Repo
@@ -19,6 +19,9 @@ jobs:
             docker build -t csvscraper .
             ### Running the container
             docker run -v ./data:/usr/src/app/data -p 8081:8081 csvscraper
+        env:
+          NEW_REPORT_URL: ${{ secrets.NEW_REPORT_URL }}
+          MASTERLIST_URL: ${{ secrets.MASTERLIST_URL }}
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9.1.4
@@ -26,5 +29,5 @@ jobs:
           author_name: GitHub Action
           author_email: actions@github.com
           message: 'Update Poultry and Red Meat data'
-          add: 'data\ADH-717 - Poultry and Red Meat data.csv'
+          add: 'data'
           new_branch: 'testing'
