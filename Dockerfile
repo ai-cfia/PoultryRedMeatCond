@@ -15,6 +15,11 @@ RUN apt-get update && \
 # Set the working directory
 WORKDIR /usr/src/app
 
+ARG NEW_REPORT_URL
+ENV NEW_REPORT_URL=$NEW_REPORT_URL
+ARG MASTERLIST_URL
+ENV MASTERLIST_URL=$MASTERLIST_URL
+
 # Copy the requirements.txt file into the container
 COPY requirements.txt ./
 
