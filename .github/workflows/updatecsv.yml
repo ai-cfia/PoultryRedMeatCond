@@ -18,7 +18,7 @@ jobs:
         run: |
             docker build -t csvscraper .
             ### Running the container
-            docker run -v ./data:/usr/src/app/data -p 8081:8081 -e MASTERLIST_URL=${{ secrets.MASTERLIST_URL }} -e NEW_REPORT_URL=${{ secrets.NEW_REPORT_URL }} csvscraper
+            docker run -v ${{ github.workspace }}/data:/usr/src/app/data -p 8081:8081 -e MASTERLIST_URL=${{ secrets.MASTERLIST_URL }} -e NEW_REPORT_URL=${{ secrets.NEW_REPORT_URL }} csvscraper
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9.1.4
