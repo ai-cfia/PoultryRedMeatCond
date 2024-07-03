@@ -2,7 +2,10 @@ name: Update Poultry and Red Meat data
 
 on:
   schedule: 
-   - cron: '58 18 3 * *'
+   - cron: '0 0 3 * *'
+  push:
+    branches:
+    - 1-fix-chromedriver-pipeline-error
 
 jobs:
   update-csv:
