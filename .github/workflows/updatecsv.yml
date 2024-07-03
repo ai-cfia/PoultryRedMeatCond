@@ -3,9 +3,7 @@ name: Update Poultry and Red Meat data
 on:
   schedule: 
    - cron: '0 0 3 * *'
-  push:
-    branches:
-    - 1-fix-chromedriver-pipeline-error
+  workflow_dispatch:
 
 jobs:
   update-csv:
@@ -13,8 +11,6 @@ jobs:
     steps:
       - name: Check Out Repo
         uses: actions/checkout@v4
-        with:
-          ref: '1-fix-chromedriver-pipeline-error' # remove this when ready
 
       - name: Run docker job
         run: |
@@ -29,4 +25,3 @@ jobs:
           author_email: actions@github.com
           message: 'Update Poultry and Red Meat data'
           add: 'data'
-          new_branch: 'testing' # remove this when ready
