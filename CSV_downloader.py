@@ -42,12 +42,12 @@ def handle_frontend_interaction(driver, URL):
     """Handles front-end interactions including navigating, CAPTCHA solving, and initiating download."""
     
     driver.get(URL)
+    driver.implicitly_wait(20)
     captcha_text = driver.find_element(by='id', value='captcha_label').text
     captcha_answer = eval(captcha_text.split('=')[0])
     driver.find_element(by='id', value='captcha').send_keys(str(captcha_answer))
-    driver.find_element(by='xpath', value='//*[@id="promptForm"]/div/input[11]').click()
-    driver.implicitly_wait(15)
-    driver.find_element(by='xpath', value='//*[@id="wb-cont"]/p[2]/a[1]').click()
+    driver.find_element(by='id', value='btnNext').click()
+    driver.find_element(by='id', value='linkGetReport').click()
     
 def merge_reports(new_report):
     print('\033[2;31;43m MERGING REPORTS \033[0;0m')
