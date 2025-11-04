@@ -1,6 +1,7 @@
 import time
 import glob
 import os
+from datetime import datetime
 from github import Github
 from dotenv import load_dotenv
 from selenium import webdriver
@@ -63,7 +64,7 @@ def merge_reports(new_report):
 
     # Define the key columns for matching
     key_columns = ['Year', 'Month_ID', 'Region_Province_Eng', 'Region_Province_Fr', 'Species_Eng', 'Species_Fr', 'Type_Eng', 'Type_Fr', 'Condition_Code', 'Description_Eng', 'Description_Fr', 'Units_Eng', 'Units_Fr']
-    
+
     # Merge to update existing rows
     merged_dataframe = pd.merge(master_dataframe, monthly_dataframe[key_columns + ['Data_Value']], on=key_columns, how='left', suffixes=('', '_new'))
     merged_dataframe['Data_Value'] = merged_dataframe.apply(lambda x: x['Data_Value_new'] if pd.notnull(x['Data_Value_new']) else x['Data_Value'], axis=1)
@@ -77,11 +78,22 @@ def merge_reports(new_report):
     updated_master_dataframe.sort_values(by=['Species_Eng', 'Year'], inplace=True)
     updated_master_dataframe = updated_master_dataframe.drop_duplicates(subset=key_columns)
 
-    # Save the updated master list
-    file_path = os.path.join('.', 'data', 'ADH-717 - Poultry and Red Meat data.csv')
-    updated_master_dataframe.to_csv(file_path, index=False, encoding="utf-16", sep="\t")
+    # Split data into two CSV files based on 20-year span
+    current_year = datetime.now().year
+    cutoff_year = current_year - 20
 
-    print('Updated master dataframe shape:', updated_master_dataframe.shape)
+    # Recent data (last 20 years: 2005-2025)
+    recent_dataframe = updated_master_dataframe[updated_master_dataframe['Year'] >= cutoff_year]
+    recent_file_path = os.path.join('.', 'data', 'ADH-717 - Poultry and Red Meat data.csv')
+    recent_dataframe.to_csv(recent_file_path, index=False, encoding="utf-16", sep="\t")
+
+    # Older data (before 2005)
+    older_dataframe = updated_master_dataframe[updated_master_dataframe['Year'] < cutoff_year]
+    older_file_path = os.path.join('.', 'data', 'ADH-717 - Poultry and Red Meat data (Historical).csv')
+    older_dataframe.to_csv(older_file_path, index=False, encoding="utf-16", sep="\t")
+
+    print(f'Recent data (>= {cutoff_year}) shape:', recent_dataframe.shape)
+    print(f'Historical data (< {cutoff_year}) shape:', older_dataframe.shape)
     print('\033[2;31;43m MERGED REPORTS SUCCESSFULLY \033[0;0m')
 
 def update_github(commit_message="Updated the master list"):
