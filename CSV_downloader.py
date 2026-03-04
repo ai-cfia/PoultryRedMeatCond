@@ -92,6 +92,7 @@ def merge_reports(new_report):
     older_file_path = os.path.join('.', 'data', 'ADH-717 - Poultry and Red Meat data (Historical).csv')
     older_dataframe.to_csv(older_file_path, index=False, encoding="utf-16", sep="\t")
 
+    print(f'Updated master list shape: {updated_master_dataframe.shape}')
     print(f'Recent data (>= {cutoff_year}) shape:', recent_dataframe.shape)
     print(f'Historical data (< {cutoff_year}) shape:', older_dataframe.shape)
     print('\033[2;31;43m MERGED REPORTS SUCCESSFULLY \033[0;0m')
