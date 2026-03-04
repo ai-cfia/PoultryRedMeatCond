@@ -1,8 +1,8 @@
 name: Update Poultry and Red Meat data
 
 on:
-  schedule: 
-   - cron: '0 0 3 * *'
+  schedule:
+    - cron: "0 0 3 * *"
   workflow_dispatch:
 
 jobs:
@@ -14,14 +14,14 @@ jobs:
 
       - name: Run docker job
         run: |
-            docker build -t csvscraper .
-            ### Running the container
-            docker run -v ${{ github.workspace }}/data:/usr/src/app/data -p 8081:8081 -e MASTERLIST_URL=${{ secrets.MASTERLIST_URL }} -e NEW_REPORT_URL=${{ secrets.NEW_REPORT_URL }} csvscraper
+          docker build -t csvscraper .
+          ### Running the container
+          docker run -v ${{ github.workspace }}/data:/usr/src/app/data -p 8081:8081 -e MASTERLIST_URL=${{ secrets.MASTERLIST_URL }} -e MASTERLIST_URL2=${{ secrets.MASTERLIST_URL2 }} -e NEW_REPORT_URL=${{ secrets.NEW_REPORT_URL }} csvscraper
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9.1.4
         with:
           author_name: GitHub Action
           author_email: actions@github.com
-          message: 'Update Poultry and Red Meat data'
-          add: 'data'
+          message: "Update Poultry and Red Meat data"
+          add: "data"
