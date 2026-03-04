@@ -70,6 +70,7 @@ def merge_reports(new_report):
     monthly_dataframe['Year'] = monthly_dataframe['Year'].astype(int)
 
     master_dataframe = pd.concat([master_dataframe, master_dataframe2], ignore_index=True)
+    print(f'Master list shape after concatenation: {master_dataframe.shape}')
 
     # Define the key columns for matching
     key_columns = ['Year', 'Month_ID', 'Region_Province_Eng', 'Region_Province_Fr', 'Species_Eng', 'Species_Fr', 'Type_Eng', 'Type_Fr', 'Condition_Code', 'Description_Eng', 'Description_Fr', 'Units_Eng', 'Units_Fr']
