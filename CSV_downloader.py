@@ -55,13 +55,21 @@ def merge_reports(new_report):
 
     # Load the data
     MASTERLIST_URL = os.getenv('MASTERLIST_URL')
-    print(f"Loading master list from: {MASTERLIST_URL}")
+    MASTERLIST_URL2 = os.getenv('MASTERLIST_URL2')
+    if not MASTERLIST_URL or not MASTERLIST_URL2:
+        print("Master list URLs are not set in environment variables.")
+        raise ValueError("Master list URLs are required.")
+    
     master_dataframe = pd.read_csv(MASTERLIST_URL, encoding="utf-16", delimiter="\t")
+    master_dataframe2 = pd.read_csv(MASTERLIST_URL2, encoding="utf-16", delimiter="\t")
     monthly_dataframe = pd.read_csv(new_report, encoding="utf-16", delimiter="\t")
 
     # Ensure the 'Year' column is of type integer
     master_dataframe['Year'] = master_dataframe['Year'].astype(int)
+    master_dataframe2['Year'] = master_dataframe2['Year'].astype(int)
     monthly_dataframe['Year'] = monthly_dataframe['Year'].astype(int)
+
+    master_dataframe = pd.concat([master_dataframe, master_dataframe2], ignore_index=True)
 
     # Define the key columns for matching
     key_columns = ['Year', 'Month_ID', 'Region_Province_Eng', 'Region_Province_Fr', 'Species_Eng', 'Species_Fr', 'Type_Eng', 'Type_Fr', 'Condition_Code', 'Description_Eng', 'Description_Fr', 'Units_Eng', 'Units_Fr']
