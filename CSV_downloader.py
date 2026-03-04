@@ -55,6 +55,7 @@ def merge_reports(new_report):
 
     # Load the data
     MASTERLIST_URL = os.getenv('MASTERLIST_URL')
+    print(f"Loading master list from: {MASTERLIST_URL}")
     master_dataframe = pd.read_csv(MASTERLIST_URL, encoding="utf-16", delimiter="\t")
     monthly_dataframe = pd.read_csv(new_report, encoding="utf-16", delimiter="\t")
 
